@@ -1,0 +1,50 @@
+# Model arguments
+model_name_or_path: alignment-handbook/zephyr-7b-sft-full
+ref_model_name_or_path: princeton-nlp/Mistral-7B-Base-SFT-SimPO
+torch_dtype: bfloat16
+attn_implementation: flash_attention_2
+
+# Data training arguments
+# For definitions, see: src/h4/training/config.py
+dataset_mixer:
+  HuggingFaceH4/ultrafeedback_binarized: 1.0
+dataset_splits:
+- train_prefs
+- test_prefs
+preprocessing_num_workers: 1
+
+
+# DPOTrainer arguments
+bf16: true
+beta: 0.1
+do_eval: true
+eval_strategy: steps
+eval_steps: 20
+gradient_accumulation_steps: 16
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: False
+hub_model_id: zephyr-7b-dpo-full
+learning_rate: 5.0e-7
+log_level: info
+logging_steps: 20
+lr_scheduler_type: cosine
+max_length: 2048
+max_prompt_length: 1800
+num_train_epochs: 1
+optim: adamw_torch
+output_dir: data/HyPO_Llama-3-8B-Instruct
+per_device_train_batch_size: 4
+per_device_eval_batch_size: 8
+push_to_hub: true
+save_strategy: "steps"
+save_steps: 477
+save_total_limit: 100
+save_only_model: true
+seed: 42
+warmup_ratio: 0.1
+avg_log_prob: false
+im_enable: true
+im_gamma: 0.0
+im_tau: 0.1
+max_grad_norm: 0.0
